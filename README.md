@@ -116,20 +116,20 @@ Result when 'RUB' (Russian Ruble) is given as a desired currency.
 
 ## Choice of Tech Stack
 
-   1. Python `requests`.
+   1. __Python `requests`__
 
       The alternative was a combination of `curl` and a shell
       script. `requests` is chosen, because it enables the whole code to fit
       in one python script. The downloaded data is also swiftly
       converted to pandas DataFrame from json without an overhead.
 
-   2. Python `sqlalchemy`.
+   2. __Python `sqlalchemy`__
 
       The alternative was `peewee`. The use of `sqlalchemy` is one of
       the constraints externally set to the project (along with being
       on-premise and a containerized solution)
 
-   3. PostgreSQL
+   3. __PostgreSQL__
 
       Possible choices are MySQL, SQLite, SQL server, MariaDB and cloud
       data warehouse such as BigQuery and Amazon
@@ -138,7 +138,7 @@ Result when 'RUB' (Russian Ruble) is given as a desired currency.
       prototype project which is without a container. It was simply 
       straightforward to continue with PostgreSQL.
 
-   4. Python `pandas` and csv format
+   4. __Python `pandas` and csv format__
 
       Other possibilities are `datatable` and similar high-performance data
       format, or native SQL (= data manipulation will be done in
@@ -146,7 +146,7 @@ Result when 'RUB' (Russian Ruble) is given as a desired currency.
       its compromised speed. At the scale we are currently working, `pandas`
       will not make a significant bottleneck.
    
-   5. Docker
+   5. __Docker__
 
       The alternative was `docker-compose`. `docker-compose` uses
       `docker-compose.yml` (in addition to `Dockerfile`) to configure
