@@ -19,7 +19,7 @@
 
 4. `docker exec -it zep1 python3 currency_conversion.py EUR [YOUR TOKEN]
    Run python script inside the container. Replace `[YOUR TOKEN]` with
-   an access token you manually obtained at `http://api.exchangeratesapi.io`.
+   an access token you manually obtained at `http://exchangeratesapi.io`.
    The access token can be given with or without the parenthesis ("---"). 
 
 or, in case you would like to keep the container interactive, 
@@ -176,7 +176,7 @@ requirements.txt
 ### currency_conversion.py
 
 1. `get_current_rate()` : Collect the latest currency exchange rate from the website.
-`exchangerateapi.io`. The data is acquired in json format, and will be
+`http://exchangeratesapi.io`. The data is acquired in json format, and will be
 converted to pandas DataFrame. 
 
 2. `create_mock_table()` : Create a price table whose prices are to be converted.
