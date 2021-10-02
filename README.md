@@ -29,13 +29,13 @@ or, in case you would like to keep the container interactive,
     `python3 currency_conversion.py EUR [YOUR TOKEN]`
     inside the container.
 
-## Stop container
+### Stop container
 1. `docker stop zep1'
 
-## Clean up
+### Clean up
 1. `docker rm zep1'
 
-## Really Clean up
+### Really Clean up
 
 1. `docker image prune`
 2. `docker volume prune`
@@ -173,7 +173,7 @@ currency_conversion.py
 requirements.txt
 ```
 
-# currency_conversion.py
+### currency_conversion.py
 
 1. `get_current_rate()` : Collect the latest currency exchange rate from the website.
 `exchangerateapi.io`. The data is acquired in json format, and will be
@@ -187,7 +187,7 @@ convert the prices in the mock-up table to the unit of the desired currency.
 The updated table is stored in postgreSQL server using sqlalchemy.
 
 
-# Dockerfile
+### Dockerfile
 ```
 # base image to create a container
 FROM postgres:latest
@@ -224,7 +224,7 @@ COPY currency_conversion.py /zep/
 ------------------------------------------------------------------
 ## Data Model
 
-# Currency Exchange Rate Table
+### Currency Exchange Rate Table
 
 The latest information of the currency exchange rate.
 
@@ -239,7 +239,7 @@ The latest information of the currency exchange rate.
 - rates : the value of the currency with respect to the base currency. 
 
 
-# Mock-up Table
+### Mock-up Table
 
 A table of prices for 3 different trains with the unit of the price (=
 currency).
