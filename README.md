@@ -30,10 +30,10 @@ or, in case you would like to keep the container interactive,
     inside the container.
 
 ### Stop container
-1. `docker stop zep1'
+1. `docker stop zep1`
 
 ### Clean up
-1. `docker rm zep1'
+1. `docker rm zep1`
 
 ### Really Clean up
 
