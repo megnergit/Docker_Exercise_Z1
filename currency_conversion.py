@@ -5,14 +5,12 @@ import sys
 import pdb
 import pandas as pd
 import requests
+
 # ===========================================================
 
 # ACCESS_KEY = '36713a14ec549b80bded5bc3c14aab27'
 # TARGET_CURRENCY = 'EUR'
 
-args = sys.argv
-TARGET_CURRENCY = args[1]
-ACCESS_KEY = args[2]
 
 # ===========================================================
 # update current exchange rate
@@ -97,7 +95,7 @@ class Train(Base):
 # create mock table in postgres DB
 
 
-def create_mock_table(engine, TARGET_CURENCY: str) -> None:
+def create_mock_table(engine, TARGET_CURRENCY: str) -> None:
     """Create a mock-up table that shows prices of trains in various currency.
     The function create a table in postgres database, and exit. No returning 
     parameters
@@ -177,19 +175,29 @@ def convert_currency(engine, TARGET_CURRENCY: str, df: pd.DataFrame) -> None:
                 print(f'{train.id:3} {train.type:12} {train.price:8.2f} {train.currency:5} \
                     {train.price_in_target_currency:8.2f} {train.target_currency:5}')
 
+                last_train_currency = train.target_currency
         except:
             session.rollback()
             raise()
         else:
             session.commit()
 
+    # return last entry to test
+    return last_train_currency
+
 
 # ===========================================================
 if __name__ == '__main__':
+    args = sys.argv
+
+    if len(args) == 3:
+        TARGET_CURRENCY = args[1]
+        ACCESS_KEY = args[2]
+
     df = get_current_rate(ACCESS_KEY)
     print(
         f'\033[33m#=================================================================\033[0m')
     print(df)
     engine = create_engine("postgresql://postgres:PostgreSQL@localhost:5432")
     create_mock_table(engine, TARGET_CURRENCY)
-    convert_currency(engine, TARGET_CURRENCY, df)
+    last_train_currency = convert_currency(engine, TARGET_CURRENCY, df)
