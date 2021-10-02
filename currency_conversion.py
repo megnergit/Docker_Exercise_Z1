@@ -19,7 +19,7 @@ ACCESS_KEY = args[2]
 
 
 def get_current_rate(ACCESS_KEY: str) -> pd.DataFrame:
-    """Get current currency exchange rate from the website apiexchangeratesapi.io
+    """Get current currency exchange rate from the website api.exchangeratesapi.io
 
     Parameters
     ----------
@@ -121,7 +121,7 @@ def create_mock_table(engine, TARGET_CURENCY: str) -> None:
 
     train1 = Train(type='gueterzug', price=4000, currency='RUB',
                    price_in_target_currency=0, target_currency=TARGET_CURRENCY)
-    train2 = Train(type='nighliner', price=140, currency='USD',
+    train2 = Train(type='nightliner', price=140, currency='USD',
                    price_in_target_currency=0, target_currency=TARGET_CURRENCY)
     train3 = Train(type='ice', price=300, currency='EUR',
                    price_in_target_currency=0, target_currency=TARGET_CURRENCY)
