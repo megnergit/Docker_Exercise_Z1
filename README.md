@@ -17,8 +17,8 @@
 3. `docker run -d --name zep1 postgres`
    Create a container with a name `zep1`.
 
-4. `docker exec -it zep1 python3 currency_conversion.py EUR [YOUR TOKEN]
-   Run python script inside the container. Replace `[YOUR TOKEN]` with
+4. `docker exec -it zep1 python3 currency_conversion.py EUR [YOUR_TOKEN]`
+   Run python script inside the container. Replace `[YOUR_TOKEN]` with
    an access token you manually obtained at `http://exchangeratesapi.io`.
    The access token can be given with or without the parenthesis ("---"). 
 
