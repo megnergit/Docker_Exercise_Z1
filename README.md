@@ -255,16 +255,55 @@ currency).
 
 
 ------------------------------------------------------------------
-## Review / To-do
+## Review
+
+#### Directory structure
+
+For a larger project, the directories for source files, container
+configuration, test scripts should be separated, and must be organised
+in a standard manner.
+
+#### Dockerfile
+
+It is still not clear to me when to use `RUN`, `CMD`, `ENTRYPOINT`,
+and `docker exec`. All of them have similar functionality -- execute a
+certain command in the shell inside a container.  There should be only
+__ONE `CMD`__ line in a `Dockerfile`. If there are multiple `CMD`, only
+the last one is executed.
+
+'ADD' or 'COPY'? Use 'COPY' if you do not really need to 'ADD'. 
+
+
+#### Test-driven development
+
+This was a new concept for me. I started coding test script after
+finished the main business logic. It should have been the other way
+around.
+
+
+### To-do
 
 1. Scheduling
    Using Spark Airflow. 
 
-2. Split RDBMS and ETL for larger dataset. 
+2. Logging
+
+3. Split RDBMS and ETL for larger dataset. 
    By `docker-compose` or container orchestration.
    
-3. Parallel processing for larger dataset.
+4. Parallel processing for larger dataset.
    By using `pyspark`.
 
+
+------------------------------------------------------------------
+## Reference
+
+I thank the authors of following web sites. The instructions there
+were critically important to finish the project.
+
+https://realpython.com/python-application-layouts/
+https://realpython.com/python-testing/#how-to-use-unittest-and-flask
+https://realpython.com/python-sqlite-sqlalchemy/
+https://kb.objectrocket.com/postgresql/python-and-postgres
 
 
