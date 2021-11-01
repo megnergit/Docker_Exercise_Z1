@@ -2,7 +2,7 @@
 
 ## What the code does
 
-   - It converts the prices in a table in various currencies to the prices in a desired currency.
+   - It converts the prices in a table in various currencies to the sales prices in a desired currency.
 
    - The latest currency exchange rates are obtained from a website.
 

@@ -1,0 +1,126 @@
+from sqlalchemy.orm import declarative_base, Session
+from sqlalchemy import create_engine
+from sqlalchemy import Table, Column, Integer, Float, String
+import sys
+import pdb
+import pandas as pd
+import requests
+# ===========================================================
+# import sqlalchemy
+# sqlalchemy.__version__
+
+# ACCESS_KEY = '36713a14ec549b80bded5bc3c14aab27'
+# TARGET_CURRENCY = 'EUR'
+
+args = sys.argv
+TARGET_CURRENCY = args[1]
+ACCESS_KEY = args[2]
+
+# ===========================================================
+# update current exchange rate
+
+
+def get_current_rate(ACCESS_KEY: str) -> pd.DataFrame:
+
+    BASE_URL = "http://api.exchangeratesapi.io/v1/"
+    MESSAGE = 'latest&base=EUR&symbols=USD,EUR,RUB?'
+
+    target = BASE_URL + MESSAGE+'access_key='+ACCESS_KEY
+    reply_in_json = requests.get(target)
+
+    df = pd.io.json.read_json(reply_in_json.text)
+    df.reset_index(inplace=True)
+    df.rename(columns={'index': 'currency'}, inplace=True, errors='ignore')
+
+    return df
+
+
+# ===========================================================
+# data model for mock table
+Base = declarative_base()
+
+
+class Train(Base):
+    __tablename__ = 'train_price'
+    id = Column(Integer, primary_key=True)
+    type = Column(String(256))
+    price = Column(Float)
+    currency = Column(String(3))
+    price_in_target_currency = Column(Float)
+    target_currency = Column(String(3))
+
+    def __repr__(self):
+        return f"Train(id={self.id!r}, type={self.type!r}, price={self.price!r}, \
+            currency={self.currency!r}, \
+            price_in_target_currency={self.price_in_target_currency!r}, \
+            target_currency={self.target_currency!r})"
+
+# ===========================================================
+# create mock table in postgres DB
+
+
+def create_mock_table(engine, TARGET_CURENCY: str) -> None:
+
+    Base.metadata.drop_all(engine, checkfirst=True)
+    Base.metadata.create_all(engine)
+
+#    print(f'{TARGET_CURRENCY}')
+
+    train1 = Train(type='gueterzug', price=4000, currency='RUB',
+                   price_in_target_currency=0, target_currency=TARGET_CURRENCY)
+    train2 = Train(type='nighliner', price=140, currency='USD',
+                   price_in_target_currency=0, target_currency=TARGET_CURRENCY)
+    train3 = Train(type='ice', price=300, currency='EUR',
+                   price_in_target_currency=0, target_currency=TARGET_CURRENCY)
+
+    train_list = [train1, train2, train3]
+
+    with Session(engine) as session:
+        session.begin()
+        try:
+            session.add_all(train_list)
+        except:
+            session.rollback()
+            raise
+        else:
+            session.commit()
+
+# ===========================================================
+# convert currency
+
+
+def convert_currency(engine, TARGET_CURRENCY: str, df: pd.DataFrame) -> None:
+
+    with Session(engine) as session:
+        try:
+            trains = session.query(Train).all()
+            print(
+                f'\033[36m#=================================================================\033[0m')
+            print(f'# id type price currency new_price new_currency')
+            for train in trains:
+                base_rate = df[df['currency'] ==
+                               train.currency]['rates'].values[0]
+                target_rate = df[df['currency'] ==
+                                 TARGET_CURRENCY]['rates'].values[0]
+                converted_price = train.price * target_rate / base_rate
+                train.price_in_target_currency = converted_price
+                train.target_currency = TARGET_CURRENCY
+                print(f'{train.id:3} {train.type:12} {train.price:8.2f} {train.currency:5} \
+                    {train.price_in_target_currency:8.2f} {train.target_currency:5}')
+
+        except:
+            session.rollback()
+            raise()
+        else:
+            session.commit()
+
+
+# ===========================================================
+if __name__ == '__main__':
+    df = get_current_rate(ACCESS_KEY)
+    print(
+        f'\033[33m#=================================================================\033[0m')
+    print(df)
+    engine = create_engine("postgresql://postgres:PostgreSQL@localhost:5432")
+    create_mock_table(engine, TARGET_CURRENCY)
+    convert_currency(engine, TARGET_CURRENCY, df)
