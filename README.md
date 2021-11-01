@@ -1,26 +1,30 @@
 # Docker Exercise Z1
 
-## What the code does
+## What the code in this repo does. 
 
-   - It converts the sales prices in a table in various currencies to the prices in a desired currency.
+   - It converts the sales prices in a table in various currencies
+     to the prices in a desired currency.
 
-   - The latest currency exchange rates are obtained from a website.
-
+   - The latest currency exchange rates are obtained from a website each
+     time the code is executed. 
+   
 ------------------------------------------------------------------
 ## How to run the code in a container
 
 1. Clone GitHub repo.
 
 2. `docker build . -t postgres`
-   Create a docker image and name it `postgres`.
+   This command creates a docker image, and names it `postgres`.
 
 3. `docker run -d --name zep1 postgres`
-   Create a container with a name `zep1`.
+   This command creates a container with a name `zep1`.
 
 4. `docker exec -it zep1 python3 currency_conversion.py EUR [YOUR_TOKEN]`
-   Run python script inside the container. Replace `[YOUR_TOKEN]` with
-   an access token you manually obtained at `http://exchangeratesapi.io`.
-   The access token can be given with or without the parenthesis ("---"). 
+
+   This command runs python script inside the container. Replace
+   `[YOUR_TOKEN]` with an access token you manually obtained at
+   `http://exchangeratesapi.io`.  The access token can be given with
+   or without the parenthesis ("---").
 
 or, in case you would like to keep the container interactive, 
 
